@@ -20,7 +20,6 @@ int main(int argc, char** argv) {
 		error("Failed to set up display");
 		return -1;
 	}
-	bool running = true;
 	int lastUpdate = 0;
 	int now = 0;
 	while (running) {
@@ -30,6 +29,7 @@ int main(int argc, char** argv) {
 			lastUpdate = now;
 		}
 		draw();
+		SDL_Delay(10);
 	}
 }
 
