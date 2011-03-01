@@ -9,6 +9,8 @@
 #include "draw.h"
 #include <cstdio>
 
+void set_default_attribs();
+
 int main(int argc, char** argv) {
 	// Init SDL
 	if (SDL_Init(SDL_INIT_EVERYTHING) < 0) {
@@ -22,6 +24,13 @@ int main(int argc, char** argv) {
 	}
 	int lastUpdate = 0;
 	int now = 0;
+	set_default_attribs();
+	glViewport(0, 0, 640, 480);
+	glMatrixMode(GL_PROJECTION);
+	glOrtho(-1, 1, -1, 1, -1, 1);
+	glClearColor(0., 0., 0., 0.);
+	glColor3b(255, 255, 255);
+	glPointSize(10);
 	while (running) {
 		now = SDL_GetTicks();
 		if (now > lastUpdate + 1000/FPS) {
@@ -29,7 +38,26 @@ int main(int argc, char** argv) {
 			lastUpdate = now;
 		}
 		draw();
+		SDL_GL_SwapBuffers();
 		SDL_Delay(10);
 	}
 }
 
+void set_default_attribs() {
+	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ALPHA_SIZE, 8);
+
+	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 16);
+	SDL_GL_SetAttribute(SDL_GL_BUFFER_SIZE, 32);
+
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_RED_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_GREEN_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_BLUE_SIZE, 8);
+	SDL_GL_SetAttribute(SDL_GL_ACCUM_ALPHA_SIZE, 8);
+
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
+
+	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
+}

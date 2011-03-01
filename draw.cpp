@@ -1,9 +1,11 @@
 #include <gl.h>
 #include <glu.h>
 void draw() {
-	glBegin(GL_LINES);
-	glVertex2f(-10., 10.);
-	glVertex2f(10., -10.);
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+	glClear(GL_COLOR_BUFFER_BIT);
+	glBegin(GL_POINTS);
+		glVertex2f(0., 0.);
 	glEnd();
 }
 
