@@ -9,7 +9,7 @@
 #include "draw.h"
 #include <cstdio>
 
-void set_default_attribs();
+void setup_GL();
 
 int main(int argc, char** argv) {
 	// Init SDL
@@ -24,13 +24,7 @@ int main(int argc, char** argv) {
 	}
 	int lastUpdate = 0;
 	int now = 0;
-	set_default_attribs();
-	glViewport(0, 0, 640, 480);
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(-1, 1, -1, 1, -1, 1);
-	glClearColor(0., 0., 0., 0.);
-	glColor3b(255, 255, 255);
-	glPointSize(10);
+	setup_GL();
 	while (running) {
 		now = SDL_GetTicks();
 		if (now > lastUpdate + 1000/FPS) {
@@ -43,7 +37,7 @@ int main(int argc, char** argv) {
 	}
 }
 
-void set_default_attribs() {
+void setup_GL() {
 	SDL_GL_SetAttribute(SDL_GL_RED_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_GREEN_SIZE, 8);
 	SDL_GL_SetAttribute(SDL_GL_BLUE_SIZE, 8);
@@ -60,4 +54,11 @@ void set_default_attribs() {
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
+
+	glViewport(0, 0, 640, 480);
+	glMatrixMode(GL_PROJECTION);
+	glOrtho(-1, 1, -1, 1, -1, 1);
+	glClearColor(0., 1., 1., 0.);
+	glColor3b(0, 0, 255);
+	glPointSize(10);
 }
