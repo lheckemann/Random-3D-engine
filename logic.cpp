@@ -2,9 +2,12 @@
 #include "defines.h"
 
 void update() {
-	SDL_Event current;
-	while (SDL_PollEvent(&current)) {
-		if (current.type == SDL_QUIT) {
+	SDL_Event e;
+	while (SDL_PollEvent(&e)) {
+		if (e.type == SDL_QUIT) {
+			running = false;
+		}
+		else if (e.type == SDL_KEYDOWN) {
 			running = false;
 		}
 	}

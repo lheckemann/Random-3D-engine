@@ -1,7 +1,7 @@
 #include <gl.h>
 #include <glu.h>
 void draw() {
-	glColor3b(0, 0, 255);
+	glColor3ub(0, 0, 255);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT);

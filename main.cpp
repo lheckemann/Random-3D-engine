@@ -25,16 +25,26 @@ int main(int argc, char** argv) {
 	int lastUpdate = 0;
 	int now = 0;
 	setup_GL();
+	float currentfps;
+	FILE *log;
+	int lastFPS;
+	log = fopen("/tmp/3dengine.log", "w");
 	while (running) {
 		now = SDL_GetTicks();
-		if (now > lastUpdate + 1000/FPS) {
+		if (now > lastUpdate + 1000.0/FPS) {
+			if (now > lastFPS + 10000) {
+				lastFPS = now;
+				currentfps = 1000.0/(now - lastUpdate);
+				fprintf(log, "%f FPS\n", currentfps);
+			}
 			update();
+			draw();
+			SDL_GL_SwapBuffers();
 			lastUpdate = now;
 		}
-		draw();
-		SDL_GL_SwapBuffers();
-		SDL_Delay(10);
+		SDL_Delay(1);
 	}
+	fclose(log);
 }
 
 void setup_GL() {
@@ -59,6 +69,5 @@ void setup_GL() {
 	glMatrixMode(GL_PROJECTION);
 	glOrtho(-1, 1, -1, 1, -1, 1);
 	glClearColor(0., 1., 1., 0.);
-	glColor3b(0, 0, 255);
 	glPointSize(10);
 }
