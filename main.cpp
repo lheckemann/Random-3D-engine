@@ -45,12 +45,12 @@ int main(int argc, char** argv) {
 	}
 	draw = (void(*)()) dlsym(lib_handle, "draw");
 	if ((err = dlerror()) != NULL) {
-		printf(stderr, "Failed some stuff while loading game library. Error message:\n%s\n", err);
+		fprintf(stderr, "Failed some stuff while loading game library. Error message:\n%s\n", err);
 		return -1;
 	}
 	update = (void(*)(gamestate &state)) dlsym(lib_handle, "update");
 	if ((err = dlerror()) != NULL) {
-		printf(stderr, "Failed some stuff while loading game library. Error message:\n%s\n", err);
+		fprintf(stderr, "Failed some stuff while loading game library. Error message:\n%s\n", err);
 		return -1;
 	}
 	
