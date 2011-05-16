@@ -1,1 +1,3 @@
-bool running = true;
+#include "defines.h"
+
+gamestate State;

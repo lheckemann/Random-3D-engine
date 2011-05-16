@@ -1,3 +1,4 @@
+#include <dlfcn.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
 #include <gl.h>
@@ -5,8 +6,11 @@
 #include "error.h"
 #include "timing.h"
 #include "defines.h"
-#include "logic.h"
-#include "draw.h"
+#include "game_prototype.h"
+//#include "logic.h"
+//#include "draw.h"
+
+
 #include <cstdio>
 
 void setup_GL();
@@ -28,8 +32,30 @@ int main(int argc, char** argv) {
 	float currentfps;
 	FILE *log;
 	int lastFPS;
-	log = fopen("/tmp/3dengine.log", "w");
-	while (running) {
+	log = fopen("3dengine.log", "w");
+	
+	void *lib_handle;
+	void (*draw)(void) = NULL;
+	void (*update)(gamestate&) = NULL;
+	char *err;
+	lib_handle = dlopen("/tmp/game.so", RTLD_LAZY);
+	if (!lib_handle) {
+		error("Failed to load game");
+		return -1;
+	}
+	draw = (void(*)()) dlsym(lib_handle, "draw");
+	if ((err = dlerror()) != NULL) {
+		error("Failed some stuff while loading game library");
+		return -1;
+	}
+	update = (void(*)(gamestate &state)) dlsym(lib_handle, "update");
+	if ((err = dlerror()) != NULL) {
+		error("Failed some stuff while loading game library");
+		return -1;
+	}
+	
+	State.running = true;
+	while (State.running) {
 		now = SDL_GetTicks();
 		if (now > lastUpdate + 1000.0/FPS) {
 			if (now > lastFPS + 10000) {
@@ -37,8 +63,8 @@ int main(int argc, char** argv) {
 				currentfps = 1000.0/(now - lastUpdate);
 				fprintf(log, "%f FPS\n", currentfps);
 			}
-			update();
-			draw();
+			(*update)(State);
+			(*draw)();
 			SDL_GL_SwapBuffers();
 			lastUpdate = now;
 		}
