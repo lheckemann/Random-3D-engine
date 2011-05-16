@@ -50,7 +50,7 @@ int main(int argc, char** argv) {
 	}
 	update = (void(*)(gamestate &state)) dlsym(lib_handle, "update");
 	if ((err = dlerror()) != NULL) {
-		error("Failed some stuff while loading game library");
+		printf(stderr, "Failed some stuff while loading game library. Error message:\n%s\n", err);
 		return -1;
 	}
 	
