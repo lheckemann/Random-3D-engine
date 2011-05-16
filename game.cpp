@@ -1,6 +1,8 @@
 #include <SDL/SDL.h>
 #include "defines.h"
 
+#include "game_prototype.h"
+
 void update(gamestate &State) {
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
