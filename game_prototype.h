@@ -8,7 +8,7 @@ extern "C" {
 #endif
 
 void draw();
-void update(gamestate &state);
+void update(communicator &state);
 
 #ifdef __cplusplus
 }

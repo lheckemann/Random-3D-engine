@@ -1,3 +1,3 @@
 #include "defines.h"
 
-gamestate State;
+communicator State;

@@ -1,16 +1,11 @@
 #include <dlfcn.h>
 #include <SDL/SDL.h>
 #include <SDL/SDL_image.h>
-#include <gl.h>
-#include <glu.h>
+#include <GL/gl.h>
+#include <GL/glu.h>
 #include "error.h"
 #include "timing.h"
 #include "defines.h"
-#include "game_prototype.h"
-//#include "logic.h"
-//#include "draw.h"
-
-
 #include <cstdio>
 
 void setup_GL();
@@ -22,7 +17,7 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 	SDL_Surface* Display;
-	if((Display = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL)) == NULL) {
+	if((Display = SDL_SetVideoMode(640, 480, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL | SDL_RESIZABLE)) == NULL) {
 		error("Failed to set up display");
 		return -1;
 	}
@@ -36,11 +31,19 @@ int main(int argc, char** argv) {
 	
 	void *lib_handle;
 	void (*draw)(void) = NULL;
-	void (*update)(gamestate&) = NULL;
+	void (*update)(communicator&) = NULL;
 	char *err;
-	lib_handle = dlopen("/tmp/game.so", RTLD_LAZY);
+	char *gamelib_location;
+	if (argc == 2) {
+		gamelib_location = argv[1];
+	}
+	else {
+		printf("No game file provided. Please provide one at the command line.");
+		return -1;
+	}
+	lib_handle = dlopen(gamelib_location, RTLD_LAZY);
 	if (!lib_handle) {
-		error("Failed to load game");
+		error("Failed to load game (it is necessary to use ./game.so as opposed to game.so)");
 		return -1;
 	}
 	draw = (void(*)()) dlsym(lib_handle, "draw");
@@ -48,7 +51,7 @@ int main(int argc, char** argv) {
 		fprintf(stderr, "Failed some stuff while loading game library. Error message:\n%s\n", err);
 		return -1;
 	}
-	update = (void(*)(gamestate &state)) dlsym(lib_handle, "update");
+	update = (void(*)(communicator &state)) dlsym(lib_handle, "update");
 	if ((err = dlerror()) != NULL) {
 		fprintf(stderr, "Failed some stuff while loading game library. Error message:\n%s\n", err);
 		return -1;
@@ -90,10 +93,4 @@ void setup_GL() {
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLEBUFFERS, 1);
 
 	SDL_GL_SetAttribute(SDL_GL_MULTISAMPLESAMPLES, 2);
-
-	glViewport(0, 0, 640, 480);
-	glMatrixMode(GL_PROJECTION);
-	glOrtho(-1, 1, -1, 1, -1, 1);
-	glClearColor(0., 1., 1., 0.);
-	glPointSize(10);
 }

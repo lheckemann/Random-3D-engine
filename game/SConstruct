@@ -1,0 +1,10 @@
+env = Environment()
+
+env.ParseConfig('sdl-config --cflags')
+env.ParseConfig('sdl-config --libs')
+env.ParseConfig('pkg-config --libs --cflags glu')
+
+env.Append(CCFLAGS = ['-g', '-Wall'])
+env.Append(LIBS = ['SDL_image', 'dl'])
+
+env.SharedLibrary('game', ['game.cpp', '.cpp'])
