@@ -1,0 +1,6 @@
+Import('env')
+
+env.Append(CPPPATH = '#/engine')
+env.Append(CPPPATH = '.')
+
+env.SharedLibrary('game', ['game.cpp', 'event_handler.cpp'])
