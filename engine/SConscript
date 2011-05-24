@@ -1,9 +1,9 @@
 Import('env')
-
-env.Append(CCFLAGS = ['-g', '-Wall'])
+Import('game')
+Import('event_handler')
 
 env.Append(CPPPATH = '#/game')
 env.Append(CPPPATH = '.')
 
 # build target
-env.Program('engine', ['main.cpp', 'defines.cpp', 'error.cpp', 'timing.cpp', 'game.cpp', 'event_handler.cpp'])
+env.Program('engine', ['main.cpp', 'defines.cpp', 'error.cpp', 'timing.cpp'] + event_handler + game)
