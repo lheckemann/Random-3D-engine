@@ -1,12 +1,9 @@
-env = Environment()
-
-env.ParseConfig('sdl-config --cflags')
-env.ParseConfig('sdl-config --libs')
-env.ParseConfig('pkg-config --libs --cflags glu')
+Import('env')
 
 env.Append(CCFLAGS = ['-g', '-Wall'])
 
-env.Append(LIBS = ['SDL_image', 'dl'])
+env.Append(CPPPATH = '#/game')
+env.Append(CPPPATH = '.')
 
 # build target
-env.Program('engine', ['main.cpp', 'defines.cpp', 'error.cpp', 'timing.cpp'])
+env.Program('engine', ['main.cpp', 'defines.cpp', 'error.cpp', 'timing.cpp', 'game.cpp', 'event_handler.cpp'])
