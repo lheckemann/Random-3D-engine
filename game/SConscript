@@ -1,10 +1,7 @@
 Import('env')
 
-env.Append(CPPPATH = '#/engine')
-env.Append(CPPPATH = '.')
-
-event_handler = Object('event_handler.cpp')
-game = Object('game.cpp')
+event_handler = env.Object('event_handler.cpp')
+game = env.Object('game.cpp')
 
 Export('event_handler')
 Export('game')

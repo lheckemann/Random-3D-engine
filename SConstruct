@@ -16,6 +16,7 @@ env.ParseConfig('pkg-config glu --cflags')
 env.ParseConfig('pkg-config glu --libs')
 
 env.Append(CCFLAGS = ['-Wall', '-g'])
+env.Append(CPPPATH = ['#engine'])
 
 env.Replace(CXX = ['clang++'])
 
