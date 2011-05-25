@@ -11,6 +11,7 @@
 //#include "swarmer.h"
 
 bool set_up;
+float xrot = 0, yrot = 0, zrot = 0;
 
 void adjust_size(SDL_Event &e) {
 	float ratio = ((float) e.resize.w)/e.resize.h;
@@ -49,6 +50,9 @@ void update(communicator &State) {
 			handle_key(e.key, State);
 		}
 	}
+	xrot += 0.3;
+	yrot += 0.4;
+	zrot += 0.5;
 }
 
 void cube() {
@@ -81,5 +85,8 @@ void draw() {
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT);
 	glTranslatef(0.0f, 0.0f, -20.0f);
+	glRotatef(xrot, 1, 0, 0);
+	glRotatef(yrot, 0, 1, 0);
+	glRotatef(zrot, 0, 0, 1);
 	cube();
 }
