@@ -24,8 +24,11 @@ void adjust_size(SDL_Event &e) {
 }
 
 void adjust_size() {
-	float ratio = ((float) 640)/480;
-	glViewport(0, 0, 640, 480);
+	const SDL_VideoInfo *i = SDL_GetVideoInfo();
+	float w = i -> current_w;
+	float h = i -> current_h;
+	float ratio = ((float) w)/h;
+	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(45, ratio, 0.1, 10000);
 	glClearColor(0., 0., 0., 0.);
