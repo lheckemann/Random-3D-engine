@@ -20,7 +20,6 @@ void adjust_size(SDL_Event &e) {
 	glClearColor(0., 0., 0., 0.);
 	glPointSize(2);
 	glLineWidth(2);
-	printf("Resized\n");
 }
 
 void adjust_size() {
@@ -31,7 +30,6 @@ void adjust_size() {
 	glClearColor(0., 0., 0., 0.);
 	glPointSize(2);
 	glLineWidth(2);
-	printf("Resized\n");
 }
 
 void update(communicator &State) {
