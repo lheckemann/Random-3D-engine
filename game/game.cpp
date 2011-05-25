@@ -69,12 +69,16 @@ void cube() {
 	GLubyte indices [] = {
 		0, 1,
 		0, 2,
-		0, 4
+		0, 4,
+		1, 3,
+		1, 5,
+		2, 6,
+		3, 7,
 	};
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawElements(GL_LINES, 6, GL_UNSIGNED_BYTE, indices);
+	glDrawElements(GL_LINES, 16, GL_UNSIGNED_BYTE, indices);
 	
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
