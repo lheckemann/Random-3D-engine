@@ -6,23 +6,46 @@
 
 #include "event_handler.h"
 
+#include <cstdio>
+
 //#include "swarmer.h"
 
+bool set_up;
+
+void adjust_size(SDL_Event &e) {
+	float ratio = ((float) e.resize.w)/e.resize.h;
+	glViewport(0, 0, e.resize.w, e.resize.h);
+	glMatrixMode(GL_PROJECTION);
+	gluPerspective(45, ratio, 0.1, 10000);
+	glClearColor(0., 0., 0., 0.);
+	glPointSize(2);
+	glLineWidth(2);
+	printf("Resized\n");
+}
+
+void adjust_size() {
+	float ratio = ((float) 640)/480;
+	glViewport(0, 0, 640, 480);
+	glMatrixMode(GL_PROJECTION);
+	gluPerspective(45, ratio, 0.1, 10000);
+	glClearColor(0., 0., 0., 0.);
+	glPointSize(2);
+	glLineWidth(2);
+	printf("Resized\n");
+}
+
 void update(communicator &State) {
+	if (!set_up) {
+		set_up = true;
+		adjust_size();
+	}
 	SDL_Event e;
-	float ratio;
 	while (SDL_PollEvent(&e)) {
 		if (e.type == SDL_QUIT) {
 			State.running = false;
 		}
 		if (e.type == SDL_VIDEORESIZE) {
-			ratio = ((float) e.resize.w)/e.resize.h;
-			glViewport(0, 0, e.resize.w, e.resize.h);
-			glMatrixMode(GL_PROJECTION);
-			gluPerspective(45, ratio, 0.1, 10000);
-			glClearColor(0., 0., 0., 0.);
-			glPointSize(2);
-			glLineWidth(2);
+			adjust_size(e);
 		}
 		if (e.type == SDL_KEYDOWN) {
 			handle_key(e.key, State);
@@ -44,12 +67,12 @@ void cube() {
 	GLubyte indices [] = {
 		0, 1,
 		0, 2,
-		0, 4,
+		0, 4
 	};
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawElements(GL_LINES, 24, GL_UNSIGNED_BYTE, indices);
+	glDrawElements(GL_LINES, 6, GL_UNSIGNED_BYTE, indices);
 	
 	glDisableClientState(GL_VERTEX_ARRAY);
 }
