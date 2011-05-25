@@ -1,17 +1,7 @@
-#ifndef CTEST_H
-#define CTEST_H
+#ifndef GPROT_H
+#define GPROT_H
 
-#include "defines.h"
-
-#ifdef __cplusplus
-extern "C" {
-#endif
-
-void draw();
-void update(communicator &state);
-
-#ifdef __cplusplus
-}
-#endif
+extern void draw();
+extern void update(communicator &state);
 
 #endif
