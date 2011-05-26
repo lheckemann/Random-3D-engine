@@ -96,20 +96,18 @@ void cube() {
 		4, 6,
 		7, 5
 	};
-	glEnableClientState(GL_VERTEX_ARRAY);
-
-	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawElements(GL_LINES, 24, GL_UNSIGNED_BYTE, indices);
-	
-	glDisableClientState(GL_VERTEX_ARRAY);
+	GLubyte indices_once [] = {0, 1, 2, 3, 4, 5, 6, 7}; // For drawing as points
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
 	glColorPointer(3, GL_UNSIGNED_BYTE, 0, colours);
-	GLubyte i2 [] = {0, 1, 2, 3, 4, 5, 6, 7};
-	glDrawElements(GL_POINTS, 16, GL_UNSIGNED_BYTE, i2);
+	glDrawElements(GL_LINES, 24, GL_UNSIGNED_BYTE, indices);
+
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glColorPointer(3, GL_UNSIGNED_BYTE, 0, colours);
+	glDrawElements(GL_POINTS, 16, GL_UNSIGNED_BYTE, indices_once);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
