@@ -10,7 +10,7 @@
 
 //#include "swarmer.h"
 
-bool set_up;
+bool set_up = false;
 float xrot = 0, yrot = 0, zrot = 0;
 
 void adjust_size(SDL_Event &e) {
@@ -18,12 +18,9 @@ void adjust_size(SDL_Event &e) {
 	glViewport(0, 0, e.resize.w, e.resize.h);
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(45, ratio, 0.1, 10000);
-	glClearColor(0., 0., 0., 0.);
-	glPointSize(2);
-	glLineWidth(2);
 }
 
-void adjust_size() {
+void setup() {
 	const SDL_VideoInfo *i = SDL_GetVideoInfo();
 	float w = i -> current_w;
 	float h = i -> current_h;
@@ -31,15 +28,21 @@ void adjust_size() {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(45, ratio, 0.1, 10000);
-	glClearColor(0., 0., 0., 0.);
-	glPointSize(2);
+	glClearColor(0.5, 0.5, 0.5, 0.);
+	glPointSize(10);
 	glLineWidth(2);
+	
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glEnable(GL_LINE_SMOOTH);
+	glEnable(GL_POINT_SMOOTH);
+	glMatrixMode(GL_MODELVIEW_MATRIX);
 }
 
 void update(communicator &State) {
 	if (!set_up) {
 		set_up = true;
-		adjust_size();
+		setup();
 	}
 	SDL_Event e;
 	while (SDL_PollEvent(&e)) {
@@ -69,6 +72,16 @@ void cube() {
 		 1,  1, -1, // 6
 		 1,  1,  1  // 7
 	};
+	GLubyte colours [] = {
+		255, 255, 255, // 0 is white
+		255, 255,   0, // 1 is yellow
+		255,   0, 255, // 2 is magenta
+		  0, 255, 255, // 3 is cyan
+		255,   0,   0, // 4 is red
+		  0, 255,   0, // 5 is green
+		  0,   0, 255, // 6 is blue
+		  0,   0,   0  // 7 is black
+	};
 	GLubyte indices [] = {
 		0, 1,
 		0, 2,
@@ -77,13 +90,30 @@ void cube() {
 		1, 5,
 		2, 6,
 		3, 7,
+		4, 5,
+		6, 7,
+		2, 3,
+		4, 6,
+		7, 5
 	};
 	glEnableClientState(GL_VERTEX_ARRAY);
 
 	glVertexPointer(3, GL_FLOAT, 0, vertices);
-	glDrawElements(GL_LINES, 16, GL_UNSIGNED_BYTE, indices);
+	glDrawElements(GL_LINES, 24, GL_UNSIGNED_BYTE, indices);
 	
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	glVertexPointer(3, GL_FLOAT, 0, vertices);
+	glColorPointer(3, GL_UNSIGNED_BYTE, 0, colours);
+	GLubyte i2 [] = {0, 1, 2, 3, 4, 5, 6, 7};
+	glDrawElements(GL_POINTS, 16, GL_UNSIGNED_BYTE, i2);
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
 }
 
 void draw() {
@@ -92,6 +122,7 @@ void draw() {
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT);
 	glTranslatef(0.0f, 0.0f, -20.0f);
+	glScalef(3, 3, 3);
 	glRotatef(xrot, 1, 0, 0);
 	glRotatef(yrot, 0, 1, 0);
 	glRotatef(zrot, 0, 0, 1);
