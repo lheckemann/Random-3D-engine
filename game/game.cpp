@@ -119,8 +119,7 @@ void draw() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT);
-	glTranslatef(0.0f, 0.0f, -20.0f);
-	glScalef(3, 3, 3);
+	glTranslatef(0.0f, 0.0f, -5.0f);
 	glRotatef(xrot, 1, 0, 0);
 	glRotatef(yrot, 0, 1, 0);
 	glRotatef(zrot, 0, 0, 1);
