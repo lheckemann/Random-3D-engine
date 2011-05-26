@@ -16,7 +16,7 @@ void handle(SDL_Event &e, communicator &State) {
 		State.running = false;
 	}
 	if (e.type == SDL_VIDEORESIZE) {
-		adjust_projection(e.resize.w, e.resize.h);
+		adjust_projection();
 	}
 	if (e.type == SDL_KEYDOWN) {
 		handle_key(e.key, State);
