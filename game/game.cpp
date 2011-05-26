@@ -28,15 +28,18 @@ void setup() {
 	glViewport(0, 0, w, h);
 	glMatrixMode(GL_PROJECTION);
 	gluPerspective(45, ratio, 0.1, 10000);
+	glMatrixMode(GL_MODELVIEW_MATRIX);
+
 	glClearColor(0.5, 0.5, 0.5, 0.);
 	glPointSize(10);
 	glLineWidth(2);
-	
+
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
 	glEnable(GL_LINE_SMOOTH);
 	glEnable(GL_POINT_SMOOTH);
-	glMatrixMode(GL_MODELVIEW_MATRIX);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
 }
 
 void update(communicator &State) {
@@ -118,7 +121,7 @@ void draw() {
 	glColor3ub(255, 255, 255);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glTranslatef(0.0f, 0.0f, -5.0f);
 	glRotatef(xrot, 1, 0, 0);
 	glRotatef(yrot, 0, 1, 0);
