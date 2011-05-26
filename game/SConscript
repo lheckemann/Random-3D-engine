@@ -1,9 +1,9 @@
 Import('env')
 
-event_handler = env.Object('event_handler.cpp')
+swarmer = env.Object('swarmer.cpp')
+projection = env.Object('projection.cpp')
+gl_setup = env.Object('gl_setup.cpp')
+events = env.Object('events.cpp')
 game = env.Object('game.cpp')
 
-Export('event_handler')
-Export('game')
-
-
+Export('swarmer', 'projection', 'gl_setup', 'events', 'game')
