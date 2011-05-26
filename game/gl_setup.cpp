@@ -6,7 +6,7 @@
 void gl_setup() {
 	adjust_projection();
 
-	glClearColor(0.5, 0.5, 0.5, 0.);
+	glClearColor(0.0, 0.0, 1.0, 0.);
 	glPointSize(10);
 	glLineWidth(4);
 
