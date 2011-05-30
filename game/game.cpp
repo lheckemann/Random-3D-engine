@@ -15,7 +15,7 @@
 #include "gl_setup.h"
 #include "misc.h"
 
-#define MAX_SWARMERS 32768
+#define MAX_SWARMERS 16384
 
 bool set_up = false;
 
@@ -23,7 +23,7 @@ Swarmer swarmers [MAX_SWARMERS];
 
 void generic_setup() {
 	extern GLubyte colours [MAX_SWARMERS * 6];
-	extern GLint indices [MAX_SWARMERS * 2];
+	extern GLuint indices [MAX_SWARMERS * 2];
 	for (int i = 0; i < MAX_SWARMERS; i++) {
 		colours[i*6] = 255;
 		colours[i*6+1] = 0;
@@ -37,7 +37,7 @@ void generic_setup() {
 	for (int i = 0; i < MAX_SWARMERS; i++) {
 		clear_swarmer(swarmers[i]);
 	}
-	for (int i = 0; i < 32768; i++) {
+	for (int i = 0; i < MAX_SWARMERS; i++) {
 		swarmers[i].x = 0;
 		swarmers[i].y = 0;
 		swarmers[i].live = true;
@@ -87,7 +87,8 @@ void draw() {
 
 	glVertexPointer(2, GL_FLOAT, 0, coords);
 	glColorPointer(3, GL_UNSIGNED_BYTE, 0, colours);
-	glDrawElements(GL_LINES, extent, GL_UNSIGNED_BYTE, indices);
+//	glDrawElements(GL_LINES, extent, GL_UNSIGNED_INT, indices);
+	glDrawArrays(GL_LINES, 0, extent);
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);*/
