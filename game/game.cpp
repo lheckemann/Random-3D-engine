@@ -15,7 +15,7 @@
 #include "gl_setup.h"
 #include "misc.h"
 
-#define MAX_SWARMERS 4096
+#define MAX_SWARMERS 32768
 
 bool set_up = false;
 
@@ -37,7 +37,7 @@ void generic_setup() {
 	for (int i = 0; i < MAX_SWARMERS; i++) {
 		clear_swarmer(swarmers[i]);
 	}
-	for (int i = 0; i < 2048; i++) {
+	for (int i = 0; i < 32768; i++) {
 		swarmers[i].x = 0;
 		swarmers[i].y = 0;
 		swarmers[i].live = true;
