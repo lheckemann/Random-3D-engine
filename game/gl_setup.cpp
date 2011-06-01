@@ -4,7 +4,10 @@
 #include "projection.h"
 
 void gl_setup() {
-	adjust_projection();
+	const SDL_VideoInfo *i = SDL_GetVideoInfo();
+	int w = i -> current_w;
+	int h = i -> current_h;
+	adjust_projection(w, h);
 
 	glClearColor(0.0, 0.0, 1.0, 0.);
 	glPointSize(10);

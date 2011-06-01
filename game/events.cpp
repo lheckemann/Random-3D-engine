@@ -16,7 +16,8 @@ void handle(SDL_Event &e, communicator &State) {
 		State.running = false;
 	}
 	if (e.type == SDL_VIDEORESIZE) {
-		adjust_projection();
+		State.Display = SDL_SetVideoMode(e.resize.w, e.resize.h, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL | SDL_RESIZABLE);
+		adjust_projection(e.resize.w, e.resize.h);
 	}
 	if (e.type == SDL_KEYDOWN) {
 		handle_key(e.key, State);

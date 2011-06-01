@@ -17,7 +17,7 @@ int main(int argc, char** argv) {
 		return -1;
 	}
 	SDL_Surface* Display;
-	if((Display = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL | SDL_RESIZABLE)) == NULL) {
+	if((State.Display = SDL_SetVideoMode(800, 600, 32, SDL_HWSURFACE | SDL_GL_DOUBLEBUFFER | SDL_OPENGL | SDL_RESIZABLE)) == NULL) {
 		error("Failed to set up display");
 		return -1;
 	}
