@@ -2,6 +2,7 @@
 #include <SDL/SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include <GL/glut.h>
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
@@ -63,7 +64,7 @@ void update(communicator &State) {
 	}
 }
 
-
+char txt[1024];
 GLubyte colours [MAX_SWARMERS * 6];
 GLint indices [MAX_SWARMERS * 2];
 void draw() {
@@ -71,7 +72,7 @@ void draw() {
 	glLoadIdentity();
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	GLfloat coords [MAX_SWARMERS * 4];
-	int extent;
+/*	int extent;
 	for (int i = 0; i < MAX_SWARMERS; i++) {
 		if (!swarmers[i].live) {
 			extent = i;
@@ -81,7 +82,7 @@ void draw() {
 		coords[i*4+1] = swarmers[i].y;
 		coords[i*4+2] = swarmers[i].x2;
 		coords[i*4+3] = swarmers[i].y2;
-	}
+	}*/
 /*	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 

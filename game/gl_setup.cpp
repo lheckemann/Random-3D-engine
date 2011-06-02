@@ -1,4 +1,5 @@
 #include <GL/gl.h>
+#include <GL/glut.h>
 #include <SDL/SDL.h>
 
 #include "projection.h"
