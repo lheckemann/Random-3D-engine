@@ -1,5 +1,5 @@
 Import('env')
-Import('swarmer', 'projection', 'gl_setup', 'events', 'game')
+Import('star', 'projection', 'gl_setup', 'events', 'game')
 
 # build target
-env.Program('engine', ['main.cpp', 'defines.cpp', 'error.cpp', 'timing.cpp'] + swarmer + projection + gl_setup + events + game)
+env.Program('engine', ['main.cpp', 'defines.cpp', 'error.cpp', 'timing.cpp'] + star + projection + gl_setup + events + game)
