@@ -3,7 +3,6 @@
 #include "defines.h"
 #include "gl_setup.h"
 #include "projection.h"
-#include "misc.h"
 
 void handle_key(SDL_KeyboardEvent &k, communicator &State) {
 	if (k.keysym.sym == SDLK_ESCAPE) {
