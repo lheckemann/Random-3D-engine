@@ -14,7 +14,6 @@
 #include "events.h"
 #include "star.h"
 #include "gl_setup.h"
-#include "misc.h"
 
 bool set_up = false;
 
