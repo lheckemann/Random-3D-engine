@@ -18,7 +18,7 @@ env = conf.Finish()
 env.Append(CCFLAGS = ['-Wall', '-g'])
 env.Append(CPPPATH = ['#engine'])
 
-env.Replace(CXX = ['clang++'])
+#env.Replace(CXX = ['clang++'])
 
 Export('env')
 
