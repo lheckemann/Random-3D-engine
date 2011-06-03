@@ -23,13 +23,15 @@ void generic_setup() {
 	stars_lst = glGenLists(1);
 	glNewList(stars_lst, GL_COMPILE);
 	glBegin(GL_POINTS);
-	for (int i = 0; i<2048; i++) {
+	for (int i = 0; i<1048576; i++) {
 		s.generate();
 		s.draw();
 	}
 	glEnd();
 	glEndList();
 }
+
+float vX = -10.0, vY = 1.0, vZ = 1.0; // View x, y, z
 
 void update(communicator &State) {
 	if (!set_up) {
@@ -41,11 +43,22 @@ void update(communicator &State) {
 	while (SDL_PollEvent(&e)) {
 		handle(e, State);
 	}
+	Uint8 *keystate = SDL_GetKeyState(NULL);
+	if (keystate[SDLK_UP]) vX += 1;
+	if (keystate[SDLK_DOWN]) vX -= 5;
+	if (keystate[SDLK_LEFT]) vY += 0.2;
+	if (keystate[SDLK_RIGHT]) vY -= 0.2;
+	if (keystate[SDLK_w]) vZ += 0.02;
+	if (keystate[SDLK_s]) vZ -= 0.02;
 }
 
 void draw() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	gluLookAt(vX, vY, vZ, // eye
+			  vX+1.0, vY, vZ, // center
+			  0.0f, 1.0f, 0.0f); // up
+	glScalef(4000, 4000, 4000);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glCallList(stars_lst);
 	glBegin(GL_POINTS);

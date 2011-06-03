@@ -11,7 +11,7 @@ void gl_setup() {
 	adjust_projection(w, h);
 
 	glClearColor(0.0, 0.0, 0.1, 0.);
-	glPointSize(10);
+	glPointSize(2);
 	glLineWidth(4);
 
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
