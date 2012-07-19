@@ -1,8 +1,6 @@
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <GL/glut.h>
 #include "error.h"
 #include "timing.h"
 #include "defines.h"
@@ -28,7 +26,6 @@ int main(int argc, char** argv) {
 	FILE *log;
 	int lastFPS;
 	setup_GL();
-	glutInit(&argc, argv);
 	log = fopen("3dengine.log", "w");
 	
 	State.running = true;

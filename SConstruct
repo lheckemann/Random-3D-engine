@@ -1,7 +1,7 @@
 env = Environment()
 conf = Configure(env)
 
-LIBS = ['SDL','SDL_image','GL', 'GLU', 'glut']
+LIBS = ['SDL','GL', 'GLU']
 
 for lib in LIBS:
     if not conf.CheckLib(lib):
