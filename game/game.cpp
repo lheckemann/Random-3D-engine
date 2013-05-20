@@ -1,36 +1,56 @@
 // Standard Library and library includes
-#include <SDL/SDL.h>
+#include <SDL.h>
+#if __APPLE__
+#include <OpenGL/gl.h>
+#include <OpenGL/glu.h>
+#else
 #include <GL/gl.h>
 #include <GL/glu.h>
+#endif
 #include <cstdio>
 #include <cstdlib>
 #include <ctime>
 
 // Engine includes
-#include "defines.h"
+#include "../engine/defines.h"
 
 // Game includes
 #include "events.h"
-#include "star.h"
+#include "swarmer.h"
 #include "gl_setup.h"
+#include "misc.h"
+
+#define MAX_SWARMERS 8192
 
 bool set_up = false;
+bool invert_repulsion = false;
+float speed = 1.0;
 
-GLuint stars_lst;
+Swarmer swarmers [MAX_SWARMERS];
+
 void generic_setup() {
-	Star s;
-	stars_lst = glGenLists(1);
-	glNewList(stars_lst, GL_COMPILE);
-	glBegin(GL_POINTS);
-	for (int i = 0; i<1048576; i++) {
-		s.generate();
-		s.draw();
+	extern GLubyte colours [MAX_SWARMERS * 6];
+	extern GLuint indices [MAX_SWARMERS * 2];
+	for (int i = 0; i < MAX_SWARMERS; i++) {
+		colours[i*6] = 255;
+		colours[i*6+1] = 0;
+		colours[i*6+2] = 0;
+		colours[i*6+3] = 0;
+		colours[i*6+4] = 0;
+		colours[i*6+5] = 0;
+		indices[i] = i;
 	}
-	glEnd();
-	glEndList();
+	srand((int)time(0));
+	for (int i = 0; i < MAX_SWARMERS; i++) {
+		clear_swarmer(swarmers[i]);
+	}
+	for (int i = 0; i < MAX_SWARMERS; i++) {
+		swarmers[i].x = 0;
+		swarmers[i].y = 0;
+		swarmers[i].live = true;
+		update_swarmer(swarmers[i], 0, 0, 0);
+	}
 }
-
-float vX = -10.0, vY = 1.0, vZ = 1.0; // View x, y, z
 
 void update(communicator &State) {
 	if (!set_up) {
@@ -42,26 +62,51 @@ void update(communicator &State) {
 	while (SDL_PollEvent(&e)) {
 		handle(e, State);
 	}
-	Uint8 *keystate = SDL_GetKeyState(NULL);
-	if (keystate[SDLK_UP]) vX += 1;
-	if (keystate[SDLK_DOWN]) vX -= 5;
-	if (keystate[SDLK_LEFT]) vY += 0.2;
-	if (keystate[SDLK_RIGHT]) vY -= 0.2;
-	if (keystate[SDLK_w]) vZ += 0.02;
-	if (keystate[SDLK_s]) vZ -= 0.02;
+	int mx, my;
+	Uint8 ms = SDL_GetMouseState(&mx, &my);
+    bool repel = (ms & SDL_BUTTON_LEFT) ^ invert_repulsion;
+	for (int i = 0; i < MAX_SWARMERS; i++) {
+		if (!swarmers[i].live) break;
+		update_swarmer(swarmers[i], mx, my, repel);
+	}
 }
 
+char txt[1024];
+GLubyte colours [MAX_SWARMERS * 6];
+GLint indices [MAX_SWARMERS * 2];
 void draw() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	gluLookAt(vX, vY, vZ, // eye
-			  vX+1.0, vY, vZ, // center
-			  0.0f, 1.0f, 0.0f); // up
-	glScalef(4000, 4000, 4000);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glCallList(stars_lst);
-	glBegin(GL_POINTS);
-	glColor3ub(255, 255, 255);
-	glVertex3f(0.0, 0.0, 5.0);
+/*	GLfloat coords [MAX_SWARMERS * 4];
+	int extent;
+	for (int i = 0; i < MAX_SWARMERS; i++) {
+		if (!swarmers[i].live) {
+			extent = i;
+			break;
+		}
+		coords[i*4] = swarmers[i].x;
+		coords[i*4+1] = swarmers[i].y;
+		coords[i*4+2] = swarmers[i].x2;
+		coords[i*4+3] = swarmers[i].y2;
+	}*/
+/*	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+
+	glVertexPointer(2, GL_FLOAT, 0, coords);
+	glColorPointer(3, GL_UNSIGNED_BYTE, 0, colours);
+//	glDrawElements(GL_LINES, extent, GL_UNSIGNED_INT, indices);
+	glDrawArrays(GL_LINES, 0, extent);
+
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);*/
+	glBegin(GL_LINES);
+	for (int i = 0; i < MAX_SWARMERS; i++) {
+		if (!swarmers[i].live) break;
+		glColor3f(1.0f, 0.5f, 0.0f);
+		glVertex2f(swarmers[i].x, swarmers[i].y);
+		glColor3f(0.0f, 0.0f, 0.0f);
+		glVertex2f(swarmers[i].x2, swarmers[i].y2);
+	}
 	glEnd();
 }

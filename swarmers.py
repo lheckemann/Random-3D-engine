@@ -20,7 +20,7 @@ class Swarmer:
 			self.y = random.randrange(480)
 
 		
-		self.speed = 5
+		self.speed = 3
 		self.length = 20
 		self.vlist = batch.add(2, pyglet.gl.GL_LINES, None,
 			('v2f', (self.x, self.y, self.x, self.y+self.length)),
@@ -47,14 +47,14 @@ swarmerlist = []
 for i in range(750):
 	swarmerlist.append(Swarmer())
 pyglet.gl.glClearColor(0, 0, 0.8, 0)
-pyglet.gl.glLineWidth(3)
+pyglet.gl.glLineWidth(2)
 fps_display = pyglet.clock.ClockDisplay()
 countDesc = pyglet.text.Label('Swarmer Count:',
                           font_size=13,
                           x=0, y=0,
                           anchor_x='left', anchor_y='bottom')
 
-countValue = pyglet.text.Label('1',
+countValue = pyglet.text.Label('750',
                           font_size=13,
                           x=140, y=0,
                           anchor_x='left', anchor_y='bottom')
