@@ -1,4 +1,4 @@
-#include <SDL/SDL.h>
+#include <SDL.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
 #include "defines.h"
