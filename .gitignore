@@ -1,6 +1,4 @@
 *.o
 *.so
 .sc*
-*.log
-*~
-build
+config.log
