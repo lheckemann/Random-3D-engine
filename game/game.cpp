@@ -1,5 +1,5 @@
 // Standard Library and library includes
-#include <SDL.h>
+#include <SDL/SDL.h>
 #if __APPLE__
 #include <OpenGL/gl.h>
 #include <OpenGL/glu.h>
@@ -20,11 +20,16 @@
 #include "gl_setup.h"
 #include "misc.h"
 
-#define MAX_SWARMERS 8192
+#define MAX_SWARMERS 40000
 
 bool set_up = false;
 bool invert_repulsion = false;
 float speed = 1.0;
+bool exponential = false, random_enabled = false, trails = true, random_colours = false;
+
+int clears = 5;
+
+int width, height;
 
 Swarmer swarmers [MAX_SWARMERS];
 
@@ -48,6 +53,10 @@ void generic_setup() {
 		swarmers[i].x = 0;
 		swarmers[i].y = 0;
 		swarmers[i].live = true;
+        swarmers[i].extra_random = true; //(i<8000);
+        swarmers[i].colour[0] = rand() % 128 / 256.0f + 0.75;
+        swarmers[i].colour[1] = rand() % 180 / 340.0f + 0.45;
+        swarmers[i].colour[2] = rand() % 256 / 500.0f;
 		update_swarmer(swarmers[i], 0, 0, 0);
 	}
 }
@@ -71,13 +80,27 @@ void update(communicator &State) {
 	}
 }
 
-char txt[1024];
 GLubyte colours [MAX_SWARMERS * 6];
 GLint indices [MAX_SWARMERS * 2];
 void draw() {
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    
+    if (clears > 0) {
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        clears--;
+    }
+  if (trails) {
+    glColor4f(0.0f, 0.0f, 0.0f, 0.01f);
+    glBegin(GL_QUADS);
+    glVertex2f(0, 0);
+    glVertex2f(width, 0);
+    glVertex2f(width, height);
+    glVertex2f(0, height);
+    glEnd();
+  }
+  else glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  
 /*	GLfloat coords [MAX_SWARMERS * 4];
 	int extent;
 	for (int i = 0; i < MAX_SWARMERS; i++) {
@@ -100,13 +123,15 @@ void draw() {
 
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);*/
-	glBegin(GL_LINES);
+//	glBegin(GL_LINES);
+  glBegin(GL_POINTS);
 	for (int i = 0; i < MAX_SWARMERS; i++) {
 		if (!swarmers[i].live) break;
-		glColor3f(1.0f, 0.5f, 0.0f);
+		random_colours ? glColor3fv(swarmers[i].colour) : glColor4f(0.0f, 0.4f, 1.0f, 1.0f);
 		glVertex2f(swarmers[i].x, swarmers[i].y);
-		glColor3f(0.0f, 0.0f, 0.0f);
-		glVertex2f(swarmers[i].x2, swarmers[i].y2);
+		//glColor4f(0.75f, 0.25f, 0.0f, 0.0f);
+		//glVertex2f(swarmers[i].x2, swarmers[i].y2);
 	}
-	glEnd();
+  glEnd();
+  glFlush();
 }

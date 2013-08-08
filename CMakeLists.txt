@@ -6,7 +6,7 @@ find_package(OpenGL REQUIRED)
 #find_package(GLU REQUIRED)
 
 set (SOURCES
-  "engine/main.cpp"
+	"engine/main.cpp"
 	"engine/timing.cpp"
 	"engine/error.cpp"
 	"engine/defines.cpp"
@@ -17,11 +17,18 @@ set (SOURCES
 	"game/game.cpp"
 )
 
+if (APPLE)
+set (SOURCES
+	"${SOURCES}"
+	"SDLmain.m"
+)
+endif (APPLE)
+
 
 add_executable (
   Swarmers
   WIN32
-  MACOSX_BUNDLE
+#  MACOSX_BUNDLE
   ${SOURCES}
   swarmers.rc
 )
